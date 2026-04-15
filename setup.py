@@ -1,0 +1,19 @@
+from setuptools import setup
+from pybind11.setup_helpers import Pybind11Extension, build_ext
+import os
+
+ext_modules = [
+    Pybind11Extension(
+        "vmath",
+        ["src/main.cpp"],
+        extra_compile_args=['/arch:AVX2', '/openmp'] if os.name == 'nt' else ['-mavx2', '-fopenmp'],
+        extra_link_args=['/openmp'] if os.name == 'nt' else ['-fopenmp'],
+    ),
+]
+
+setup(
+    name="vmath",
+    version="0.1.0",
+    ext_modules=ext_modules,
+    cmdclass={"build_ext": build_ext},
+)
